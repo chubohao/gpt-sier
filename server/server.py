@@ -60,7 +60,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
         # 调API
-        openai.api_key = "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"
+        openai.api_key = ""
         messages = [item for item in user_status if item["id"] == id][0]['messages']
         # 将数据流逐块发送给客户端
         print(messages)
