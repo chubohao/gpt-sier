@@ -101,9 +101,9 @@ export default {
     <div class="flex flex-nowrap fixed w-full items-baseline top-0 px-6 py-4 bg-gray-100">
       
       <div class="text-2xl font-bold">GPT SIER</div>
-      <div class="text-sm text-gray-500 ml-3">基于 GPT-3.5-TURBO 模型</div>
+      <div class="text-sm text-gray-500 ml-3">Based on the GPT-3.5-TURBO model</div>
       
-      <div class="ml-auto px-3 py-2 text-sm cursor-pointer hover:bg-white rounded-md" @click="">设置</div>
+      <div class="ml-auto px-3 py-2 text-sm cursor-pointer hover:bg-white rounded-md" @click="">Setting</div>
     </div>
 
     <div class="flex-1 mx-2 mt-20 mb-2" ref="chatListDom">

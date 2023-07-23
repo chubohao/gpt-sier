@@ -1,16 +1,23 @@
 # GPT SIER
-基于Vue3 + vite + Typescript + Tailwind CSS 纯前端框架，调用 OpenAI 的 `gpt-3.5-turbo` 模型 API 实现的简单聊天对话，支持连续对话。7月底可以支持 `GPT-4` 模型。
+The back-end service is implemented based on Python, which is used to call OpenAI's `gpt-3.5-turbo` model API, which supports context memory function and can conduct multiple rounds of dialogue. The front-end interactive page is implemented based on Vue3 + vite + Typescript + Tailwind CSS. At the end of July, the `GPT-4` model can be supported, as well as speech recognition and image generation functions.
 
-参考 [CHATGPT-VUE](https://github.com/lianginx/chatgpt-vue)
-## 开始
+Referenced [CHATGPT-VUE](https://github.com/lianginx/chatgpt-vue)
 
-> 注意：本项目没有使用任何代理，API 在前端发送请求，能否连通基于你当前浏览器的所处的网络环境。
+![](assets/1.png)
+![](assets/2.png)
 
-在开始之前，请确保您已正确安装 Node.js 运行时环境，本案例是 `Nodejs 18.16.0` 。如果您还没有安装 Node.js，请 [点击这里下载](https://nodejs.org/)。
+## Back-end
+```bash
+pip3 install openai
+python3 server.py
+```
 
-使用 ChatGPT 需要先申请 API Key，已注册但还没有 API Key 的用户可以 [前往这里生成](https://platform.openai.com/account/api-keys)。
+## Front-end
+Before starting, make sure you have properly installed Node.js runtime environment, in this case `Nodejs 18.16.0`. If you do not have Node.js installed, please [click here to download it](https://nodejs.org/).
 
-准备就绪后，进入项目根目录执行以下命令运行项目：
+To use ChatGPT, you need to apply for an API Key first. Users who have registered but do not have an API Key can [generate it here](https://platform.openai.com/account/api-keys).
+
+When ready, enter the project root directory and execute the following command to run the project:
 
 ```bash
 npm i
@@ -26,10 +33,7 @@ VITE v3.2.5  ready in 294 ms
 ➜  Network: use --host to expose
 ```
 
-按住 `Ctrl` 或 `command` 点击 Local 链接，在浏览器中打开项目，然后在页面底部输入框中填入您的 API Key，然后点击保存，即可开始使用！
 
-如果想要更改 API Key，点击页面右上角 `设置`，重新输入并保存即可。
+## License
 
-## 许可证
-
-本项目使用 [MIT](LICENSE) 协议
+This project uses the [MIT](LICENSE) license
