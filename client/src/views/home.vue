@@ -17,12 +17,8 @@ export default {
       md: md,
       messageList: [
         {
-          role: "system",
-          content: "你是 ChatGPT，OpenAI 训练的大型语言模型，尽可能简洁地回答。",
-        },
-        {
           role: "assistant",
-          content: `你好，我是AI语言模型，我可以提供一些常用服务和信息。`,
+          content: `Hi，I am an AI natural language model, I can provide some common services and information.`,
         },
       ],
     };

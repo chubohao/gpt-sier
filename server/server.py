@@ -5,7 +5,10 @@ import json
 import time
 import threading
 
-quantity = 20
+# Set the context round to 5 round
+quantity = 10
+
+# Init user infomation
 user_status = [{"id": 0, "start":time.time(), "time": time.time(), "messages": [{"role": "system", "content": "You are a intelligent assistant."}]}]
 
 class RequestHandler(BaseHTTPRequestHandler):
@@ -15,32 +18,21 @@ class RequestHandler(BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
 
-        # 获取请求人信息并记录
+        # Get the quetsion and save
         id = json.loads(post_data)['id']
         question = json.loads(post_data)['question']
 
-        # 查询历史记录，存在则累计问题，并更新时间；新增则插入
+        # Query historical records,
+        # if the user already exists, accumulate questions and update the time,
+        # if the user does not exist, add and insert.
         if id in [item.get("id") for item in user_status]:
             data = [item for item in user_status if item["id"] == id]
-            # 最大限制10分钟
-            '''
-            if time.time() - data[0]['start'] >= 600:
-                self.send_response(200)
-                self.send_header('Content-Type', 'text/plain')
-                self.send_header('Transfer-Encoding', 'chunked')
-                self.end_headers()
-                self.wfile.write(b'0\r\nOVER TIMER\r\n')
-                self.wfile.flush()
-                self.wfile.write(b'0\r\n\r\n')
-                self.wfile.flush()
-                return
-            '''
 
-            # 如果大于5个回合，则去除最久的
+            # If greater than 5 rounds, delete the oldest.
             if len(data[0]['messages']) > quantity:
                 data[0]['messages'] = data[0]['messages'][-quantity:]
 
-            # 如果间隔10分钟，则清空历史记录
+            # If the interval exceeds 10 minutes, clear the user's history.
             if time.time() - data[0]['time'] >= 300:
                 data[0]['messages'] = [{"role": "user", "content": question}]
             else:
@@ -53,20 +45,21 @@ class RequestHandler(BaseHTTPRequestHandler):
                                 "time": time.time(), 
                                 "messages": [{"role": "system", "content": "You are a intelligent assistant."}, {"role": "user", "content": question}]})
 
-        # 设置响应头，启用流式传输
+        # Set response headers, enable streaming
         self.send_response(200)
         self.send_header('Content-Type', 'text/plain')
         self.send_header('Transfer-Encoding', 'chunked')
         self.end_headers()
 
-        # 调API
+        # Call openai API
         openai.api_key = ""
         messages = [item for item in user_status if item["id"] == id][0]['messages']
-        # 将数据流逐块发送给客户端
+        
+        # Send the data stream chunk by chunk to the client
         print(messages)
         response_chunck_list = []
         for chunk in openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, stream=True):
-            # 判断是否最后一块
+            # Determine if it is the last block
             if chunk["choices"][0]['finish_reason'] == "stop": 
                 self.wfile.write(b'0\r\n\r\n')
                 self.wfile.flush()
@@ -83,7 +76,6 @@ class RequestHandler(BaseHTTPRequestHandler):
             data = [item for item in user_status if item["id"] == id]
             data[0]['messages'].append({"role": "assistant", "content": ''.join(response_chunck_list)})
 
-        print(user_status)
 if __name__ == '__main__':
         print("# start sier server 8998")
         server = HTTPServer(("0.0.0.0", 8998), RequestHandler)
